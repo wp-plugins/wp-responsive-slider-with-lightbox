@@ -50,6 +50,29 @@ to theme or pages/posts.
 12. Slider image have caption can have link
 
 
+**=Pro Features(Add On)=**
+
+1. Unlimited Slider(Multiple sliders).
+
+2. Pro version WP >3.5 then use WordPress media uploader for image upload.
+
+3. Add wordpress featured image in slider directly from post/page add/edit.
+
+4. 16 Slider Easing Effects(select your desired slider easing effect).
+
+5. show/hide lightbox caption for particular image lightbox.
+
+6. No advertisements.
+
+7. New Field Added Image Description.If image description set it will added to lightbox image caption.
+
+8. New Field Added Image Order,Now admin can display slider according image order.
+
+9. New Field added open image link in new tab or same tab.The link will be added into lightbox image title
+
+10. Responsive Admin layout
+
+
 [Get Support](http://www.i13websolution.com/contacts)
 
 
