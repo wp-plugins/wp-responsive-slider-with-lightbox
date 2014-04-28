@@ -8,7 +8,7 @@
     Version:1.0
 
     */
-
+    error_reporting(0);
     add_filter('widget_text', 'do_shortcode');
     add_action('admin_menu', 'responsive_slider_plus_lightbox_add_admin_menu');
     add_action( 'admin_init', 'responsive_slider_plus_lightbox_plugin_admin_init' );
