@@ -1438,7 +1438,10 @@
                                 $n(document).ready(function(){
                                         var sliderMainHtmladmin=$n('#divResponsiveSliderPlusLightboxMain_admin').html();      
                                         var slider= $n('.responsiveSlider').bxSlider({
-                                                slideWidth: <?php echo $settings['imagewidth'];?>,
+                                          <?php if( $settings['visible']==1):?>
+					    mode:'fade',
+					   <?php endif;?>
+						slideWidth: <?php echo $settings['imagewidth'];?>,
                                                 minSlides: <?php echo $settings['min_visible'];?>,
                                                 maxSlides: <?php echo $settings['visible'];?>,
                                                 moveSlides: <?php echo $settings['scroll'];?>,
@@ -1494,7 +1497,10 @@
                                                 $n('#divResponsiveSliderPlusLightboxMain_admin').html('');   
                                                 $n('#divResponsiveSliderPlusLightboxMain_admin').html(sliderMainHtmladmin);
                                                 var slider= $n('.responsiveSlider').bxSlider({
-                                                        slideWidth: <?php echo $settings['imagewidth'];?>,
+                                                   <?php if( $settings['visible']==1):?>
+						      mode:'fade',
+						    <?php endif;?>
+							slideWidth: <?php echo $settings['imagewidth'];?>,
                                                         minSlides: <?php echo $settings['min_visible'];?>,
                                                         maxSlides: <?php echo $settings['visible'];?>,
                                                         moveSlides: <?php echo $settings['scroll'];?>,
@@ -1690,6 +1696,9 @@
         $n(document).ready(function(){
                 var sliderMainHtml=$n('#divSliderMain').html();   
                 var slider= $n('.responsiveSliderWithResponsiveLightbox').bxSlider({
+		      <?php if( $settings['visible']==1):?>
+                              mode:'fade',
+                       <?php endif;?>
                         slideWidth: <?php echo $settings['imagewidth'];?>,
                         minSlides: <?php echo $settings['min_visible'];?>,
                         maxSlides: <?php echo $settings['visible'];?>,
@@ -1748,7 +1757,10 @@
                         $n('#divSliderMain').html('');   
                         $n('#divSliderMain').html(sliderMainHtml);
                         var slider= $n('.responsiveSliderWithResponsiveLightbox').bxSlider({
-                                slideWidth: <?php echo $settings['imagewidth'];?>,
+                               <?php if( $settings['visible']==1):?>
+				mode:'fade',
+			      <?php endif;?>
+			        slideWidth: <?php echo $settings['imagewidth'];?>,
                                 minSlides: <?php echo $settings['min_visible'];?>,
                                 maxSlides: <?php echo $settings['visible'];?>,
                                 moveSlides: <?php echo $settings['scroll'];?>,
