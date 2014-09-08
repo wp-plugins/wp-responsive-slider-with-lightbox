@@ -3,12 +3,16 @@ Contributors:nik00726
 Donate link:http://www.i13websolution.com/donate-wordpress_image_thumbnail.php
 Tags:wordpress thumbnail slider lightbox,wordpress responsive slider lightbox,wordpress image lightbox,wordpress responsive lightbox gallery,wordpress lightbox gallery,wordpress lightbox image,wordpress responsive lightbox scroller,wordpress responsive lightbox slider,wordpress responsive lightbox slideshow
 Requires at least:3.0
-Tested up to:3.9.1
+Tested up to:4.0
 Version:1.0
 Stable tag:trunk
 License:GPLv2 or later
 License URI:http://www.gnu.org/licenses/gpl-2.0.html
 == Description ==
+
+**Support Upto WordPress 4.0**
+
+
 This is beautiful responsive thumbnail slider for wordPress blogs and sites with responsive lightbox.Admin can manages any number of images into the slider.
 Admin can add,edit and delete slider images.admin can set image description to lightbox.Before add slider to wordPress blog admin can preview a slider.Admin can set height,width of slider images.Admin can also set speed,Number Of visible images into slider,Circular slider.Admin can also set if want to slide images with left and right arrow or by automatic slider.
 Admin can also set link for lightbox image caption title.Image title and link are optional.If not set it will just display image with lightbox.
