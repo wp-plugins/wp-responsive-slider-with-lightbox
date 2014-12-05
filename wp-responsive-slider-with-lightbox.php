@@ -11,7 +11,7 @@
     error_reporting(0);
     add_filter('widget_text', 'do_shortcode');
     add_action('admin_menu', 'responsive_slider_plus_lightbox_add_admin_menu');
-    add_action( 'admin_init', 'responsive_slider_plus_lightbox_plugin_admin_init' );
+    //add_action( 'admin_init', 'responsive_slider_plus_lightbox_plugin_admin_init' );
     register_activation_hook(__FILE__,'install_responsive_slider_plus_lightbox');
     add_action('wp_enqueue_scripts', 'responsive_slider_plus_lightbox_load_styles_and_js');
     add_shortcode( 'print_responsive_slider_plus_lightbox', 'print_responsive_slider_plus_lightbox_func' );
@@ -97,11 +97,14 @@
 
     function responsive_slider_plus_lightbox_add_admin_menu(){
 
-        add_menu_page( __( 'Responsive Slider plus Lightbox'), __( 'Responsive Slider plus Lightbox' ), 'administrator', 'responsive_thumbnail_slider_with_lightbox', 'responsive_thumbnail_slider_with_lightbox_admin_options_func' );
-        add_submenu_page( 'responsive_thumbnail_slider_with_lightbox', __( 'Manage Sliders'), __( 'Slider Settings' ),'administrator', 'responsive_thumbnail_slider_with_lightbox', 'responsive_thumbnail_slider_with_lightbox_admin_options_func' );
-        add_submenu_page( 'responsive_thumbnail_slider_with_lightbox', __( 'Manage Images'), __( 'Manage Images'),'administrator', 'responsive_thumbnail_slider_with_lightbox_image_management', 'responsive_thumbnail_slider_with_lightbox_image_management_func' );
-        add_submenu_page( 'responsive_thumbnail_slider_with_lightbox', __( 'Preview Slider'), __( 'Preview Slider'),'administrator', 'responsive_thumbnail_slider_with_lightbox_preview', 'responsive_thumbnail_slider_with_lightbox_admin_preview_func' );
+        $hook_suffix_r_l=add_menu_page( __( 'Responsive Slider plus Lightbox'), __( 'Responsive Slider plus Lightbox' ), 'administrator', 'responsive_thumbnail_slider_with_lightbox', 'responsive_thumbnail_slider_with_lightbox_admin_options_func' );
+        $hook_suffix_r_l=add_submenu_page( 'responsive_thumbnail_slider_with_lightbox', __( 'Manage Sliders'), __( 'Slider Settings' ),'administrator', 'responsive_thumbnail_slider_with_lightbox', 'responsive_thumbnail_slider_with_lightbox_admin_options_func' );
+        $hook_suffix_r_l_1=add_submenu_page( 'responsive_thumbnail_slider_with_lightbox', __( 'Manage Images'), __( 'Manage Images'),'administrator', 'responsive_thumbnail_slider_with_lightbox_image_management', 'responsive_thumbnail_slider_with_lightbox_image_management_func' );
+        $hook_suffix_r_l_2=add_submenu_page( 'responsive_thumbnail_slider_with_lightbox', __( 'Preview Slider'), __( 'Preview Slider'),'administrator', 'responsive_thumbnail_slider_with_lightbox_preview', 'responsive_thumbnail_slider_with_lightbox_admin_preview_func' );
 
+        add_action( 'load-' . $hook_suffix_r_l , 'responsive_slider_plus_lightbox_plugin_admin_init' );
+        add_action( 'load-' . $hook_suffix_r_l_1 , 'responsive_slider_plus_lightbox_plugin_admin_init' );
+        add_action( 'load-' . $hook_suffix_r_l_2 , 'responsive_slider_plus_lightbox_plugin_admin_init' );
 
     }
 
