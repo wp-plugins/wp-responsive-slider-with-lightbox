@@ -1,8 +1,8 @@
 <?php
     /* 
     Plugin Name: WP Responsive Slider With Lightbox
-    Plugin URI:http://www.i13websolution.com
-    Author URI:http://www.i13websolution.com
+    Plugin URI:http://www.i13websolution.com/wordpress-responsive-slider-with-responsive-lightbox.html
+    Author URI:http://www.i13websolution.com/wordpress-responsive-slider-with-responsive-lightbox.html
     Description:This is beautiful responsive thumbnail image slider with responsive lightbox.Add any number of images from admin panel.
     Author:I Thirteen Web Solution
     Version:1.0
