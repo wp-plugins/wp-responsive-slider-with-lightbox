@@ -539,7 +539,7 @@
                 <div class="postbox"> 
                     <h3 class="hndle"><span></span>Recommended WordPress Hostings</h3> 
                     <div class="inside">
-                        <center><a target="_blank" href="http://www.shareasale.com/r.cfm?b=531904&u=675922&m=41388&urllink=&afftrack="><img src="http://www.shareasale.com/image/41388/sas_banner_250x250.jpg" alt="WP Engine" border="0"></a></center>
+                        <center><a href="http://secure.hostgator.com/~affiliat/cgi-bin/affiliates/clickthru.cgi?id=nik00726-hs-wp"><img src="http://tracking.hostgator.com/img/WordPress_Hosting/300x250-animated.gif" width="250" height="250" border="0"></a></center>
                         <div style="margin:10px 5px">
                         </div>
                     </div></div>
@@ -873,7 +873,7 @@
                             update_option('responsive_thumbnail_slider_plus_lightbox_messages', $responsive_thumbnail_slider_plus_lightbox_messages);
 
                             echo "<script type='text/javascript'> location.href='$location';</script>";
-
+							exit;
                         }
                         else{
                             
@@ -913,6 +913,7 @@
 
 
                     echo "<script type='text/javascript'> location.href='$location';</script>";
+                    exit;
                 }
                 else{
 
@@ -940,6 +941,7 @@
                         update_option('responsive_thumbnail_slider_plus_lightbox_messages', $responsive_thumbnail_slider_plus_lightbox_messages);
 
                         echo "<script type='text/javascript'> location.href='$location';</script>";
+                        exit;
 
                     }
                     else{
@@ -975,7 +977,7 @@
 
                     }     
                     echo "<script type='text/javascript'> location.href='$location';</script>";          
-
+					exit;
                 } 
 
             }
@@ -1165,9 +1167,9 @@
                             </div>
                         </div></div>
                     <div class="postbox"> 
-                        <h3 class="hndle"><span></span>Worried About SEO ?</h3> 
+                        <h3 class="hndle"><span></span>Best WordPress Hosting </h3> 
                         <div class="inside">
-                            <center><a target="_blank" href="http://www.shareasale.com/r.cfm?b=378609&u=675922&m=6133&urllink=&afftrack="><img src="http://www.shareasale.com/image/6133/iNeedHits_250x250_target.gif" alt="Drive 1,000's of Targeted Visitors to YOUR site with iNeedHits.com! Shop Now! " border="0"></a></center>
+                            <center><a href="http://secure.hostgator.com/~affiliat/cgi-bin/affiliates/clickthru.cgi?id=nik00726-hs-wp"><img src="http://tracking.hostgator.com/img/WordPress_Hosting/300x250-animated.gif" width="250" height="250" border="0"></a></center>
 
                             <div style="margin:10px 5px">
 
@@ -1226,6 +1228,7 @@
             }  
 
             echo "<script type='text/javascript'> location.href='$location';</script>";
+            exit;
 
         }  
         else if(strtolower($action)==strtolower('deleteselected')){
@@ -1279,18 +1282,20 @@
                     }  
 
                     echo "<script type='text/javascript'> location.href='$location';</script>";
-
+					exit;
 
                 }
                 else{
 
-                    echo "<script type='text/javascript'> location.href='$location';</script>";   
+                    echo "<script type='text/javascript'> location.href='$location';</script>"; 
+                    exit;  
                 }
 
             }
             else{
 
-                echo "<script type='text/javascript'> location.href='$location';</script>";      
+                echo "<script type='text/javascript'> location.href='$location';</script>"; 
+                exit;     
             }
 
         }       
