@@ -1415,24 +1415,24 @@
                                                 $rowTitle=str_replace('"','”',$rowTitle); 
                                                 if(trim($row['title'])!='' and trim($row['custom_link'])!=''){
 
-                                                    $title="<a class='Imglink1' target='_blank' href='{$row['custom_link']}'>{$rowTitle}</a>";
+                                                    $title="<a class='Imglink' target='_blank' href='{$row['custom_link']}'>{$rowTitle}</a>";
 
                                                 }
                                                 else if(trim($row['title'])!='' and trim($row['custom_link'])==''){
 
-                                                    $title="<a class='Imglink1' href='#'>{$rowTitle}</a>"; 
+                                                    $title="<a class='Imglink' href='#'>{$rowTitle}</a>"; 
 
                                                 }
                                                 else{
 
                                                     if($row['title']!='')
-                                                        $title="<a class='Imglink1' target='_blank' href='#'>{$rowTitle}</a>"; 
+                                                        $title="<a class='Imglink' target='_blank' href='#'>{$rowTitle}</a>"; 
                                                 }
 
                                             ?>         
 
                                             <div > 
-                                                <a  title="<?php echo $title;?>" data-lightbox="<?php echo $randOmeAlbName;?>" href="<?php echo $outputimgmain;?>">
+                                                <a rel="<?php echo $randOmeAlbName;?>" data-overlay="1" data-title="<?php echo $title;?>" class="r_lbox" href="<?php echo $outputimgmain;?>">
                                                     <img src="<?php echo $outputimg; ?>" alt="<?php echo $rowTitle; ?>" title="<?php echo $rowTitle;?>"  />
                                                 </a> 
                                             </div>
@@ -1442,7 +1442,8 @@
                                 </div>
                             </div>
                             <script>
-                                var $n = jQuery.noConflict();  
+                                var $n = jQuery.noConflict();
+                                var uniqObj=$n("a[rel='<?php echo $randOmeAlbName;?>']");
                                 $n(document).ready(function(){
                                         var sliderMainHtmladmin=$n('#divResponsiveSliderPlusLightboxMain_admin').html();      
                                         var slider= $n('.responsiveSlider').bxSlider({
@@ -1474,6 +1475,45 @@
                                                     auto:true,       
                                                     <?php endif;?>
                                                 infiniteLoop: <?php echo ($settings['circular'])? 'true':'false' ?>,
+                                                 onSliderLoad: function(){
+                                   
+                                                        $n(".r_lbox").fancybox({
+                                                        'overlayColor':'#000000',
+                                                         'padding': 10,
+                                                         'autoScale': true,
+                                                         'autoDimensions':true,
+                                                         'transitionIn': 'none',
+                                                         'uniqObj':uniqObj,
+                                                         'transitionOut': 'none',
+                                                         'titlePosition': 'over',
+                                                         <?php if ($settings['circular']): ?>
+                                                         'cyclic':true,
+                                                        <?php else: ?>
+                                                         'cyclic':false,
+                                                        <?php endif; ?>
+                                                         'hideOnContentClick':false,
+                                                         'width' : 600,
+                                                         'height' : 350,
+                                                         'titleFormat': function(title, currentArray, currentIndex, currentOpts) {
+                                                             var currtElem = $n('.responsiveSlider a[href="'+currentOpts.href+'"]');
+
+                                                             var isoverlay = $n(currtElem).attr('data-overlay')
+                                                           
+                                                            if(isoverlay=="1" && $n.trim(title)!=""){
+                                                             return '<span id="fancybox-title-over">' + title  + '</span>';
+                                                            }
+                                                            else{
+                                                                return '';
+                                                            }
+
+                                                            },
+
+                                                       });
+                                                     
+                                     
+                                  
+                                     
+                                                      }        
 
 
                                         });
@@ -1499,48 +1539,11 @@
 
                                             }   
 
-
-                                            function onResize(){
-
-                                                $n('#divResponsiveSliderPlusLightboxMain_admin').html('');   
-                                                $n('#divResponsiveSliderPlusLightboxMain_admin').html(sliderMainHtmladmin);
-                                                var slider= $n('.responsiveSlider').bxSlider({
-                                                   <?php if( $settings['visible']==1):?>
-						      mode:'fade',
-						    <?php endif;?>
-							slideWidth: <?php echo $settings['imagewidth'];?>,
-                                                        minSlides: <?php echo $settings['min_visible'];?>,
-                                                        maxSlides: <?php echo $settings['visible'];?>,
-                                                        moveSlides: <?php echo $settings['scroll'];?>,
-                                                        slideMargin: <?php echo $settings['imageMargin'];?>,  
-                                                        speed:<?php echo $settings['speed']; ?>,
-                                                        pause:<?php echo $settings['pause']; ?>,
-                                                        <?php if($settings['pauseonmouseover'] and $settings['auto']){ ?>
-                                                            autoHover: true,
-                                                            <?php }else{ if($settings['auto']){?>   
-                                                                autoHover:false,
-                                                                <?php }} ?>
-                                                        <?php if($settings['auto']):?>
-                                                            controls:false,
-                                                            <?php else: ?>
-                                                            controls:true,
-                                                            <?php endif;?>
-                                                        pager:false,
-                                                        useCSS:false,
-                                                        <?php if($settings['auto']):?>
-                                                            auto:true,       
-                                                            <?php endif;?>
-                                                        <?php if($settings['circular']):?>
-                                                            infiniteLoop: true
-                                                            <?php else: ?>
-                                                            infiniteLoop: false
-                                                            <?php endif;?>
-
-                                                });
-
-
+                                              function onResize(){
+                                                slider.reloadSlider();
+                                                $n(".responsiveSliderWithResponsiveLightbox").show();
                                             }
-
+                                         
                                             <?php }?>  
 
                                 });
@@ -1673,24 +1676,25 @@
                         $rowTitle=str_replace('"','”',$rowTitle); 
                         if(trim($row['title'])!='' and trim($row['custom_link'])!=''){
 
-                            $title="<a class='Imglink1' target='_blank' href='{$row['custom_link']}'>{$rowTitle}</a>";
+                            $title="<a class='Imglink' target='_blank' href='{$row['custom_link']}'>{$rowTitle}</a>";
 
                         }
                         else if(trim($row['title'])!='' and trim($row['custom_link'])==''){
 
-                            $title="<a class='Imglink1' href='#'>{$rowTitle}</a>"; 
+                            $title="<a class='Imglink' href='#'>{$rowTitle}</a>"; 
 
                         }
                         else{
 
                             if($row['title']!='')
-                                $title="<a class='Imglink1' target='_blank' href='#'>{$rowTitle}</a>"; 
+                                $title="<a class='Imglink' target='_blank' href='#'>{$rowTitle}</a>"; 
                         }
 
                     ?>         
+            
 
                     <div class="limargin"> 
-                        <a  title="<?php echo $title;?>" data-lightbox="<?php echo $randOmeAlbName;?>" href="<?php echo $outputimgmain;?>">
+                       <a rel="<?php echo $randOmeAlbName;?>" data-overlay="1" data-title="<?php echo $title;?>" class="r_lbox" href="<?php echo $outputimgmain;?>">
                             <img src="<?php echo $outputimg; ?>" alt="<?php echo $rowTitle; ?>" title="<?php echo $rowTitle;?>"  />
                         </a> 
                     </div>
@@ -1730,10 +1734,50 @@
                             auto:true,       
                             <?php endif;?>
                         <?php if($settings['circular']):?>
-                            infiniteLoop: true
+                            infiniteLoop: true,
                             <?php else: ?>
-                            infiniteLoop: false
+                            infiniteLoop: false,
                             <?php endif;?>
+                             onSliderLoad: function(){
+                                var uniqObj=$n("a[rel='<?php echo $randOmeAlbName;?>']");
+                                 $n(".r_lbox").fancybox({
+                                 'overlayColor':'#000000',
+                                  'padding': 10,
+                                  'autoScale': true,
+                                  'autoDimensions':true,
+                                  'transitionIn': 'none',
+                                  'uniqObj':uniqObj,
+                                  'transitionOut': 'none',
+                                  'titlePosition': 'over',
+                                  <?php if ($settings['circular']): ?>
+                                  'cyclic':true,
+                                 <?php else: ?>
+                                  'cyclic':false,
+                                 <?php endif; ?>
+                                  'hideOnContentClick':false,
+                                  'width' : 600,
+                                  'height' : 350,
+                                  'titleFormat': function(title, currentArray, currentIndex, currentOpts) {
+
+                                      var currtElem = $n('.responsiveSlider a[href="'+currentOpts.href+'"]');
+
+                                      var isoverlay = $n(currtElem).attr('data-overlay')
+
+                                     if(isoverlay=="1" && $n.trim(title)!=""){
+
+                                      return '<span id="fancybox-title-over">' + title  + '</span>';
+                                     }
+                                     else{
+                                         return '';
+                                     }
+
+                                     },
+
+                                });
+
+
+
+                       }          
 
                 });
 
@@ -1759,48 +1803,13 @@
                         });
 
                     }    
-
+                    
                     function onResize(){
-
-                        $n('#divSliderMain').html('');   
-                        $n('#divSliderMain').html(sliderMainHtml);
-                        var slider= $n('.responsiveSliderWithResponsiveLightbox').bxSlider({
-                               <?php if( $settings['visible']==1):?>
-				mode:'fade',
-			      <?php endif;?>
-			        slideWidth: <?php echo $settings['imagewidth'];?>,
-                                minSlides: <?php echo $settings['min_visible'];?>,
-                                maxSlides: <?php echo $settings['visible'];?>,
-                                moveSlides: <?php echo $settings['scroll'];?>,
-                                slideMargin: <?php echo $settings['imageMargin'];?>,  
-                                speed:<?php echo $settings['speed']; ?>,
-                                pause:<?php echo $settings['pause']; ?>,
-                                <?php if($settings['pauseonmouseover'] and $settings['auto']){ ?>
-                                    autoHover: true,
-                                    <?php }else{ if($settings['auto']){?>   
-                                        autoHover:false,
-                                        <?php }} ?>
-                                <?php if($settings['auto']):?>
-                                    controls:false,
-                                    <?php else: ?>
-                                    controls:true,
-                                    <?php endif;?>
-                                pager:false,
-                                useCSS:false,
-                                <?php if($settings['auto']):?>
-                                    auto:true,       
-                                    <?php endif;?>
-                                <?php if($settings['circular']):?>
-                                    infiniteLoop: true
-                                    <?php else: ?>
-                                    infiniteLoop: false
-                                    <?php endif;?>
-
-                        });
-
+                        slider.reloadSlider();
                         $n(".responsiveSliderWithResponsiveLightbox").show();
                     }
 
+                  
                     <?php }?>   
 
 

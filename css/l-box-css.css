@@ -1,228 +1,263 @@
-/* Preload images */
+/*
+ * FancyBox - jQuery Plugin
+ * Simple and fancy lightbox alternative
+ *
+ * Examples and documentation at: http://fancybox.net
+ * 
+ * Copyright (c) 2008 - 2010 Janis Skarnelis
+ * Modified 2012 Nikola Vidoni (mobile ready, CSS3 optimizations, dropped IE6-7 support for shadows & opacity)
+ * That said, it is hardly a one-person project. Many people have submitted bugs, code, and offered their advice freely. Their support is greatly appreciated.
+ * 
+ * Version: 1.3.6 (22/11/2012)
+ * Requires: jQuery v1.3+
+ *
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ */
+ 
+#fancybox-loading_ {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-top: -22px;
+	margin-left: -22px;
+	width: 44px;
+	height: 44px;
+	background: url('../images/vl-box/controls.png') 0 -108px;
+	opacity: 0.8;
+	cursor: pointer;
+	z-index: 9999999;
+	display: none;
+}
 
-.lightboxOverlay {
+#fancybox-loading_ div {
+	width: 44px;
+	height: 44px;
+	background: url('../images/vl-box/loading.gif') center center no-repeat;
+}
+
+#fancybox-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 99999;
+	display: none;
+box-sizing:content-box;
+
+}
+
+#fancybox-tmp {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	overflow: auto;
+	display: none;
+}
+
+#fancybox-wrap {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 20px;
+	z-index: 1101;
+	outline: none;
+	display: none;
+	z-index:9999998;
+box-sizing:content-box;
+
+
+}
+
+#fancybox-outer {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background: #fff;
+	-webkit-box-shadow: 0px 0px 15px rgba(0,0,0,0.50);
+	-moz-box-shadow: 0px 0px 15px rgba(0,0,0,0.50);
+	box-shadow: 0px 0px 15px rgba(0,0,0,0.50);
+	filter: progid: DXImageTransform.Microsoft.Blur (pixelradius = 15, enabled = "true") ;
+        box-sizing:content-box;
+}
+
+#fancybox-content {
+	width: 0;
+	height: 0;
+	padding: 0;
+	outline: none;
+	position: relative;
+	overflow: hidden;
+	z-index: 1102;
+	border: 0px solid #fff; 
+        box-sizing:content-box;
+
+}
+
+#fancybox-hide-sel-frame {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	z-index: 1101;
+box-sizing:content-box;
+
+
+}
+
+#fancybox-close {
+	position: absolute;
+	top: -18px;
+	right: -18px;
+	width: 36px;
+	height: 36px;
+	background: url('../images/vl-box/controls.png') 0 0 no-repeat;
+	cursor: pointer;
+	z-index: 1103;
+	display: none;
+}
+
+#fancybox-error {
+	color: #444;
+	font: normal 12px/20px Arial, Helvetica, sans-serif;
+	padding: 14px;
+	margin: 0;
+}
+
+#fancybox-img {
+	max-width: 100%;
+	max-height: 100%;
+	padding: 0;
+	margin: 0;
+	border: none;
+	outline: none;
+}
+
+#fancybox-frame {
+	width: 100%;
+	height: 100%;
+	border: none;
+	display: block;
+box-sizing:content-box;
+
+
+}
+
+#fancybox-left_, #fancybox-right_{
+	position: absolute;
+	bottom: 0px;
+	height: 34px;
+	width: 30%;
+	cursor: pointer;
+	outline: none;
+	z-index: 1102;
+	display: none;
+        top:50%;
+        margin-top: -16px;
+}
+
+#fancybox-left_ {
+	left: 0px;
+}
+
+#fancybox-right_ {
+	right: 0px;
+}
+
+#fancybox-left-ico_, #fancybox-right-ico_ {
+	position: absolute;
+	top: 50%;
+	left: -9999px;
+	width: 36px;
+	height: 36px;
+	margin-top: -15px;
+	cursor: pointer;
+	z-index: 1102;
+	display: block;
+}
+
+#fancybox-left-ico_ {
+	background: url('../images/vl-box/controls.png') 0 -36px no-repeat;
+}
+
+#fancybox-right-ico_ {
+	background: url('../images/vl-box/controls.png') 0 -72px no-repeat;
+}
+
+#fancybox-left_:hover span {
+	left: 19px;
+}
+
+#fancybox-right_:hover span {
+	left: auto;
+	right: 19px;
+}
+
+#fancybox-title {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	z-index: 1102;
+	background:#000;
+}
+
+.fancybox-title-inside {
+	position: relative;
+	padding-bottom: 10px;
+	color: #333;
+	text-align: center;
+	background: #fff;
+}
+
+.fancybox-title-outside {
+	/*padding-top: 10px;*/
+	color: #fff;
+}
+
+.fancybox-title-over {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	color: #fff;
+	text-align: left;
+}
+
+#fancybox-title-over {
+	display: block;
+	padding: 10px;
+	background-color: #000;
+	background-color: rgba(0,0,0,0.5);	
+}
+
+.fancybox-title-float {
+	position: absolute;
+	bottom: -20px;
+	padding: 6px 12px;
+	width: auto;	
+	color: #fff;
+	font-weight: bold;
+	white-space: nowrap;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0.7);
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+.Imglink{
+	color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    }
+.clear_description_{margin-top: 5px;line-height:18px;color:#ffffff}
+.playbtnCss {
+  display: block;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 9999;
-  background-color: black !important;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
-  opacity: 0.8 !important;
-  display: none;    
-}
-
-.lightbox {
-  
-  position: absolute;
-  width: 100%;
-  z-index: 9999;
-  background-color: none;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
-  display: none;
-  opacity: 0.99;
-  text-align: center;
-  font-weight: normal;  
-}
-
-.lightbox .lb-image {
-  display: block;
-  height: auto;
-  max-width: inherit;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-}
-
-.lightbox a img {
-  border: none;
-}
-
-.lb-outerContainer {
-  position: relative;
-  background-color: white !important; 
-  *zoom: 1;
-  width: 250px;
-  height: 250px;
-  margin: 0 auto;    
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-}
-
-.lb-outerContainer:after {
-  content: "";
-  display: table;
-  clear: both;      
-}
-
-.lb-container {
-  padding: 4px;
-}
-
-.lb-loader {
-  position: absolute;
-  top: 43%;
-  left: 0%;
-  height: 25%;
-  width: 100%;
-  text-align: center;
-  line-height: 0;
-}
-
-.lb-cancel {
-  display: block;
-  width: 32px;
-  height: 32px;
-  margin: 0 auto;
-  background: url(../images/loading.gif) no-repeat;    
-}
-
-.lb-nav {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 10;
-}
-
-.lb-container > .nav {
-  left: 0;
-}
-
-.lb-nav a {
-  outline: none;
-  background-image: url('data:image/gif;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==');
-}
-
-.lb-prev, .lb-next {
-  height: 100%;
-  cursor: pointer;
-  display: block;
-}
-
-.lb-prev {
-  width: 34%;
-  left: 0;
-  float: left;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-  opacity: 0;
-  -webkit-transition: opacity 0.6s;
-  -moz-transition: opacity 0.6s;
-  -o-transition: opacity 0.6s;
-  transition: opacity 0.6s;
-}
-
-.lb-prev:hover {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  background: url(../images/prev.png) left 48% no-repeat;
-}
-
-.lb-next {
-  width: 64%;
+  bottom: 0;
   right: 0;
-  float: right;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-  opacity: 0;
-  -webkit-transition: opacity 0.6s;
-  -moz-transition: opacity 0.6s;
-  -o-transition: opacity 0.6s;
-  transition: opacity 0.6s;
-}
-
-.lb-next:hover {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  background: url(../images/next.png) right 48% no-repeat;
-}
-
-.lb-dataContainer {
-  margin: 0 auto;     
-  padding-top: 5px;
-  position:relative;
-  top:-9px;
-  background-color: #fff;
-  *zoom: 1;
-  width: 100%;
-  -moz-border-radius-bottomleft: 4px;
-  -webkit-border-bottom-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-  -moz-border-radius-bottomright: 4px;
-  -webkit-border-bottom-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
-.lb-dataContainer:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.lb-data {
-  padding: 0 4px;
-  color: #bbbbbb;
-}
-
-.lb-data .lb-details {
-  width: 85%;
-  float: left;
-  text-align: left;
-  line-height: 1.1em;
-}
-
-.lb-data .lb-caption {
-  font-size: 13px;
-  font-weight: bold;
-  line-height: 1em;
-}
-
-.lb-data .lb-number {
-  display: block;
-  clear: left;
-  padding-bottom: 1em;
-  font-size: 12px;
-  color: #999999;
-}
-
-.lb-data .lb-close {
-  display: block;
-  float: right;
-  width: 30px;
-  height: 30px;
-  background: url(../images/close.png) top right no-repeat;
-  text-align: right;
-  outline: none;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
-  opacity: 0.7;
-  -webkit-transition: opacity 0.2s;
-  -moz-transition: opacity 0.2s;
-  -o-transition: opacity 0.2s;
-  transition: opacity 0.2s;
-}
-
-.lb-data .lb-close:hover {
-  cursor: pointer;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-}
-.Imglink1 {
-    
-    font-family: Helvetica !important;
-    font-size: 12px !important;
-    font-weight: bold !important;
-    text-decoration: underline !important;
-    font-size: 14px !important;
-    margin-bottom: 3px;
-    color:blue !important;
-}
-.clear_description {
-    margin-top: 6px !important;
-    color: #000;
-    margin-bottom: 4px !important;
-    font-size: 12px;
+  z-index: 1;
+  background: url("../images/vl-box/player_play.png")  no-repeat center center;
 }
