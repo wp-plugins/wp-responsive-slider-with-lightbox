@@ -18,7 +18,7 @@ Admin can add,edit and delete slider images.admin can set image description to l
 Admin can also set link for lightbox image caption title.Image title and link are optional.If not set it will just display image with lightbox.
 
 
-**Live Demo  [Responsive Slider With Responsive Lightbox](http://www.i13websolution.com/wpdemo/responsive-slider-with-responsive-lightbox-demo/)**
+**Live Demo  [Responsive Slider With Responsive Lightbox](http://blog.i13websolution.com/live-preview-wp-responsive-slider-with-lightbox-pro/)**
 
 **Find WordPress Responsive Slider With Responsive Lightbox Pro Plugin(Unlimited Slider+Much more) at [wordPress Responsive Slider With Lightbox](http://www.i13websolution.com/wordpress-responsive-slider-with-responsive-lightbox.html)**
 
