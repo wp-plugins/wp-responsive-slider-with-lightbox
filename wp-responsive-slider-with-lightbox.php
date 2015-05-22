@@ -118,7 +118,7 @@
         wp_enqueue_script('jquery'); 
         wp_enqueue_script('images-responsive-thumbnail-slider-plus-lightbox-jc',plugins_url('/js/images-responsive-thumbnail-slider-plus-lightbox-jc.js', __FILE__));
         wp_enqueue_script('l-box-js',plugins_url('/js/l-box-js.js', __FILE__));
-
+        responsive_slider_plus_lightbox_admin_scripts_init();
 
 
     }
@@ -570,6 +570,10 @@
 
             $wpcurrentdir=dirname(__FILE__);
             $wpcurrentdir=str_replace("\\","/",$wpcurrentdir);
+            
+            $uploads = wp_upload_dir();
+            $baseurl=$uploads['baseurl'];
+            $baseurl.='/wp-image-slider-with-lightbox/';
 
 
 
@@ -730,6 +734,7 @@
                                     <tr>
                                         <th class="manage-column column-cb check-column" scope="col"><input type="checkbox"></th>
                                         <th><span>Title</span></th>
+                                        <th><span></span></th>
                                         <th><span>Published On</span></th>
                                         <th><span>Edit</span></th>
                                         <th><span>Delete</span></th>
@@ -765,11 +770,15 @@
                                                 $id=$row['id'];
                                                 $editlink="admin.php?page=responsive_thumbnail_slider_with_lightbox_image_management&action=addedit&id=$id";
                                                 $deletelink="admin.php?page=responsive_thumbnail_slider_with_lightbox_image_management&action=delete&id=$id";
-
+                                                $outputimgmain = $baseurl.$row['image_name'];
+                                                
                                             ?>
                                             <tr valign="top" >
                                                 <td class="alignCenter check-column"   data-title="Select Record" ><input type="checkbox" value="<?php echo $row['id'] ?>" name="thumbnails[]"></td>
                                                 <td   data-title="Title" ><strong><?php echo stripslashes($row['title']) ?></strong></td>  
+                                                 <td class="alignCenter">
+                                                      <img src="<?php echo $outputimgmain;?>" style="width:50px" height="50px"/>
+                                                </td>  
                                                 <td class="alignCenter"   data-title="Published On" ><?php echo $row['createdon'] ?></td>
                                                 <td class="alignCenter"   data-title="Edit Record" ><strong><a href='<?php echo $editlink; ?>' title="edit">Edit</a></strong></td>  
                                                 <td class="alignCenter"   data-title="Delete Record" ><strong><a href='<?php echo $deletelink; ?>' onclick="return confirmDelete();"  title="delete">Delete</a> </strong></td>  
@@ -863,6 +872,7 @@
                     $imageurl=trim($_POST['imageurl']);
                     $imageid=trim($_POST['imageid']);
                     $imagename="";
+                     $imagename="";
                     if($_FILES["image_name"]['name']!="" and $_FILES["image_name"]['name']!=null){
 
                         if ($_FILES["image_name"]["error"] > 0)
@@ -872,16 +882,49 @@
                             $responsive_thumbnail_slider_plus_lightbox_messages['message']='Error while file uploading.';
                             update_option('responsive_thumbnail_slider_plus_lightbox_messages', $responsive_thumbnail_slider_plus_lightbox_messages);
 
+
                             echo "<script type='text/javascript'> location.href='$location';</script>";
-							exit;
-                        }
-                        else{
-                            
-                            $imagename=$_FILES["image_name"]["name"];
-                            $imageUploadTo=$pathToImagesFolder.'/'.$_FILES["image_name"]["name"];
-                            move_uploaded_file($_FILES["image_name"]["tmp_name"],$imageUploadTo ); 
+                            exit;
 
                         }
+                        else{
+
+                            $wpcurrentdir=dirname(__FILE__);
+                            $wpcurrentdir=str_replace("\\","/",$wpcurrentdir);
+                            $path_parts = pathinfo($_FILES["image_name"]["name"]);
+                            $extension = $path_parts['extension'];       
+                            $imagename=md5(time()).".$extension";
+                            $imageUploadTo=$pathToImagesFolder.'/'.$imagename;
+                            move_uploaded_file($_FILES["image_name"]["tmp_name"],$imageUploadTo); 
+
+                        }
+
+                    }
+                    else if(trim($_POST['HdnMediaSelection'])!=''){
+
+                        $postThumbnailID=(int)$_POST['HdnMediaSelection'];
+                        $photoMeta = wp_get_attachment_metadata( $postThumbnailID );
+                        if(is_array($photoMeta) and isset($photoMeta['file'])) {
+
+                            $fileName=$photoMeta['file'];
+                            $phyPath=ABSPATH;
+                            $phyPath=str_replace("\\","/",$phyPath);
+
+                            $pathArray=pathinfo($fileName);
+
+                            $imagename=$pathArray['basename'];
+
+                            $fileUrl=$phyPath.'wp-content/uploads/'.$fileName;
+                            $fileUrl=str_replace("\\","/",$fileUrl);
+
+                            $wpcurrentdir=dirname(__FILE__);
+                            $wpcurrentdir=str_replace("\\","/",$wpcurrentdir);
+                            $imageUploadTo=$pathToImagesFolder.'/'.$imagename;
+
+                            @copy($fileUrl, $imageUploadTo);
+
+                        }
+
                     }    
 
 
@@ -933,12 +976,13 @@
 
                     }
 
-                    if ($_FILES["image_name"]["error"] > 0)
+                    if ($_FILES["image_name"]['name']!='' and $_FILES["image_name"]["error"] > 0)
                     {
                         $responsive_thumbnail_slider_plus_lightbox_messages=array();
                         $responsive_thumbnail_slider_plus_lightbox_messages['type']='err';
                         $responsive_thumbnail_slider_plus_lightbox_messages['message']='Error while file uploading.';
                         update_option('responsive_thumbnail_slider_plus_lightbox_messages', $responsive_thumbnail_slider_plus_lightbox_messages);
+
 
                         echo "<script type='text/javascript'> location.href='$location';</script>";
                         exit;
@@ -949,11 +993,45 @@
 
                         try{
 
+                            if(isset($_FILES["image_name"]['name']) and $_FILES["image_name"]['name']!="" and $_FILES["image_name"]['name']!=null){
 
-                            $imagename=$_FILES["image_name"]["name"];
-                           $imageUploadTo=$pathToImagesFolder.'/'.$_FILES["image_name"]["name"];
-                            move_uploaded_file($_FILES["image_name"]["tmp_name"],$imageUploadTo ); 
+                                $wpcurrentdir=dirname(__FILE__);
+                                $wpcurrentdir=str_replace("\\","/",$wpcurrentdir);
+                                $path_parts = pathinfo($_FILES["image_name"]["name"]);
+                                $extension = $path_parts['extension'];       
+                                $imagename=md5(time()).".$extension";
+                                $imageUploadTo=$pathToImagesFolder.'/'.$imagename;
 
+                                move_uploaded_file($_FILES["image_name"]["tmp_name"],$imageUploadTo ); 
+
+                            }
+                            else if(trim($_POST['HdnMediaSelection'])!=''){
+
+                                $postThumbnailID=(int)$_POST['HdnMediaSelection'];
+                                $photoMeta = wp_get_attachment_metadata( $postThumbnailID );
+
+                                if(is_array($photoMeta) and isset($photoMeta['file'])) {
+
+                                    $fileName=$photoMeta['file'];
+                                    $phyPath=ABSPATH;
+                                    $phyPath=str_replace("\\","/",$phyPath);
+
+                                    $pathArray=pathinfo($fileName);
+
+                                    $imagename=$pathArray['basename'];
+
+                                    $fileUrl=$phyPath.'wp-content/uploads/'.$fileName;
+                                    $fileUrl=str_replace("\\","/",$fileUrl);
+
+                                    $wpcurrentdir=dirname(__FILE__);
+                                    $wpcurrentdir=str_replace("\\","/",$wpcurrentdir);
+                                    $imageUploadTo=$pathToImagesFolder.'/'.$imagename;
+
+                                    @copy($fileUrl, $imageUploadTo);
+
+                                }
+
+                            }
                             $query = "INSERT INTO ".$wpdb->prefix."responsive_slider_plus_responsive_lightbox (title, image_name,createdon,custom_link) 
                             VALUES ('$title','$imagename','$createdOn','$imageurl')";
 
@@ -1024,6 +1102,134 @@
                             <div id="post-body-content">
                                 <form method="post" action="" id="addimage" name="addimage" enctype="multipart/form-data" >
 
+                                    <div class="stuffbox" id="namediv" style="width:100%">
+                                        <h3><label for="link_name">Upload Image</label></h3>
+                                        <div class="inside" id="fileuploaddiv">
+                                            <?php if($image_name!=""){ ?>
+                                                <div><b>Current Image : </b><a id="currImg" href="<?php echo $baseurl.$image_name; ?>" target="_new"><?php echo $image_name; ?></a></div>
+                                                <?php } ?>      
+                                            <input type="file" name="image_name" onchange="reloadfileupload();"  id="image_name" size="30" />
+                                            <div style="clear:both"></div>
+                                            <div></div>
+                                            <div class="uploader">
+                                                <br/>
+                                                <b style="margin-left: 50px;">OR</b><div style="clear: both;margin-top: 15px;"></div>
+                                                <?php if(responsive_slider_plus_responsive_lightbox_get_wp_version()>=3.5){ ?>
+                                                    <a href="javascript:;" class="niks_media" id="myMediaUploader"><b>Use WordPress Media Uploader</b></a>
+                                                    <?php }?>  
+                                                <input id="HdnMediaSelection" name="HdnMediaSelection" type="hidden" value="" />
+                                                <br/>
+                                            </div>  
+                                            <script>
+                                                var $n = jQuery.noConflict();  
+                                                $n(document).ready(function() {
+                                                        //uploading files variable
+                                                        var custom_file_frame;
+                                                        $n("#myMediaUploader").click(function(event) {
+                                                                event.preventDefault();
+                                                                //If the frame already exists, reopen it
+                                                                if (typeof(custom_file_frame)!=="undefined") {
+                                                                    custom_file_frame.close();
+                                                                }
+
+                                                                //Create WP media frame.
+                                                                custom_file_frame = wp.media.frames.customHeader = wp.media({
+                                                                        //Title of media manager frame
+                                                                        title: "WP Media Uploader",
+                                                                        library: {
+                                                                            type: 'image'
+                                                                        },
+                                                                        button: {
+                                                                            //Button text
+                                                                            text: "Set Image"
+                                                                        },
+                                                                        //Do not allow multiple files, if you want multiple, set true
+                                                                        multiple: false
+                                                                });
+
+                                                                //callback for selected image
+                                                                custom_file_frame.on('select', function() {
+
+                                                                        var attachment = custom_file_frame.state().get('selection').first().toJSON();
+
+
+                                                                        var validExtensions=new Array();
+                                                                        validExtensions[0]='jpg';
+                                                                        validExtensions[1]='jpeg';
+                                                                        validExtensions[2]='png';
+                                                                        validExtensions[3]='gif';
+                                                                        validExtensions[4]='bmp';
+                                                                        validExtensions[5]='tif';
+
+                                                                        var inarr=parseInt($n.inArray( attachment.subtype, validExtensions));
+
+                                                                        if(inarr>0 && attachment.type.toLowerCase()=='image' ){
+
+                                                                            var titleTouse="";
+                                                                            var imageDescriptionTouse="";
+
+                                                                            if($n.trim(attachment.title)!=''){
+
+                                                                                titleTouse=$n.trim(attachment.title); 
+                                                                            }  
+                                                                            else if($n.trim(attachment.caption)!=''){
+
+                                                                                titleTouse=$n.trim(attachment.caption);  
+                                                                            }
+
+                                                                            if($n.trim(attachment.description)!=''){
+
+                                                                                imageDescriptionTouse=$n.trim(attachment.description); 
+                                                                            }  
+                                                                            else if($n.trim(attachment.caption)!=''){
+
+                                                                                imageDescriptionTouse=$n.trim(attachment.caption);  
+                                                                            }
+
+                                                                            $n("#imagetitle").val(titleTouse);  
+                                                                            $n("#image_description").val(imageDescriptionTouse);  
+
+                                                                            if(attachment.id!=''){
+                                                                                $n("#HdnMediaSelection").val(attachment.id);  
+                                                                            }   
+
+                                                                        }  
+                                                                        else{
+
+                                                                            alert('Invalid image selection.');
+                                                                        }  
+                                                                        //do something with attachment variable, for example attachment.filename
+                                                                        //Object:
+                                                                        //attachment.alt - image alt
+                                                                        //attachment.author - author id
+                                                                        //attachment.caption
+                                                                        //attachment.dateFormatted - date of image uploaded
+                                                                        //attachment.description
+                                                                        //attachment.editLink - edit link of media
+                                                                        //attachment.filename
+                                                                        //attachment.height
+                                                                        //attachment.icon - don't know WTF?))
+                                                                        //attachment.id - id of attachment
+                                                                        //attachment.link - public link of attachment, for example ""http://site.com/?attachment_id=115""
+                                                                        //attachment.menuOrder
+                                                                        //attachment.mime - mime type, for example image/jpeg"
+                                                                        //attachment.name - name of attachment file, for example "my-image"
+                                                                        //attachment.status - usual is "inherit"
+                                                                        //attachment.subtype - "jpeg" if is "jpg"
+                                                                        //attachment.title
+                                                                        //attachment.type - "image"
+                                                                        //attachment.uploadedTo
+                                                                        //attachment.url - http url of image, for example "http://site.com/wp-content/uploads/2012/12/my-image.jpg"
+                                                                        //attachment.width
+                                                                });
+
+                                                                //Open modal
+                                                                custom_file_frame.open();
+                                                        });
+                                                })
+                                            </script>
+                                        </div>
+                                    </div>    
                                     <div class="stuffbox" id="namediv" style="width:100%;">
                                         <h3><label for="link_name">Image Title</label></h3>
                                         <div class="inside">
@@ -1044,21 +1250,7 @@
                                             <p><?php _e('On image click users will redirect to this url.'); ?></p>
                                         </div>
                                     </div>
-                                    <div class="stuffbox" id="namediv" style="width:100%;">
-                                        <h3><label for="link_name">Upload Image</label></h3>
-                                        <div class="inside" id="fileuploaddiv">
-                                            <?php if($image_name!=""){ 
-                                                  $uploads = wp_upload_dir();
-                                                   $baseurl=$uploads['baseurl'];
-                                                   $baseurl.='/wp-image-slider-with-lightbox/';
-                                                ?>
-                                                <div><b>Current Image : </b><a id="currImg" href="<?php echo $baseurl.$image_name;?>" target="_new"><?php echo $image_name; ?></a></div>
-                                                <?php } ?>      
-                                            <input type="file" name="image_name" onchange="reloadfileupload();"  id="image_name" size="30" />
-                                            <div style="clear:both"></div>
-                                            <div></div>
-                                        </div>
-                                    </div>
+                                   
                                     <?php if(isset($_GET['id']) and $_GET['id']>0){ ?> 
                                         <input type="hidden" name="imageid" id="imageid" value="<?php echo $_GET['id'];?>">
                                         <?php
@@ -1094,10 +1286,10 @@
                                             })
                                     });
 
-                                    function validateFile(){
+                                   function validateFile(){
 
-                                        var $n = jQuery.noConflict();   
-                                        if($n('#currImg').length>0){
+                                        var $n = jQuery.noConflict();  
+                                        if($n('#currImg').length>0 || $n.trim($n("#HdnMediaSelection").val())!=""){
                                             return true;
                                         }
                                         var fragment = $n("#image_name").val();
@@ -1111,7 +1303,7 @@
                                             else
                                                 {
                                                 $n("#err_daynamic").remove();
-                                                $n("#image_name").after('<label class="image_error" id="err_daynamic">Please select file.</label>');
+                                                $n("#image_name").after('<label class="image_error" id="err_daynamic">Please select file or use media manager to select file.</label>');
                                                 return false;  
                                             } 
                                         }
@@ -1360,10 +1552,18 @@
 
                                                 }
                                                 else{
+                                                    
                                                     $imagetoCheck=$pathToImagesFolder.'/'.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];
+                                                    $imagetoCheckSmall=$pathToImagesFolder.'/'.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.strtolower($pathinfo['extension']);
+                                           
 
                                                     if(file_exists($imagetoCheck)){
+                                                        
                                                         $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];
+                                                    }
+                                                    else if(file_exists($imagetoCheckSmall)){
+                                                        
+                                                        $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.strtolower($pathinfo['extension']);
                                                     }
                                                     else{
 
@@ -1375,7 +1575,15 @@
                                                             if ( ! is_wp_error( $image ) ) {
                                                                 $image->resize( $imagewidth, $imageheight, true );
                                                                 $image->save( $imagetoCheck );
-                                                                $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];
+                                                                //$outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];
+                                                                
+                                                                 if(file_exists($imagetoCheck)){
+                                                                    $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];
+                                                                }
+                                                                else if(file_exists($imagetoCheckSmall)){
+                                                                    $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.strtolower($pathinfo['extension']);
+                                                                }
+                                                                
                                                             }
                                                             else{
                                                                 $outputimg = $baseurl.$row['image_name'];
@@ -1389,7 +1597,15 @@
 
                                                                 $isrenamed=rename($return,$imagetoCheck);
                                                                 if($isrenamed){
-                                                                    $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];  
+                                                                    //$outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];  
+                                                                    
+                                                                   if(file_exists($imagetoCheck)){
+                                                                        $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];
+                                                                    }
+                                                                    else if(file_exists($imagetoCheckSmall)){
+                                                                        $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.strtolower($pathinfo['extension']);
+                                                                    }
+                                                                    
                                                                 }
                                                                 else{
                                                                     $outputimg = $baseurl.$row['image_name']; 
@@ -1618,10 +1834,15 @@
 
                         }
                         else{
-                            $imagetoCheck=$pathToImagesFolder.'/'.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];
-
+                            
+                             $imagetoCheck=$pathToImagesFolder.'/'.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];
+                             $imagetoCheckSmall=$pathToImagesFolder.'/'.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.strtolower($pathinfo['extension']);
+                                           
                             if(file_exists($imagetoCheck)){
                                 $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];
+                            }
+                            else if(file_exists($imagetoCheckSmall)){
+                                $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.strtolower($pathinfo['extension']);
                             }
                             else{
 
@@ -1632,7 +1853,15 @@
                                     if ( ! is_wp_error( $image ) ) {
                                         $image->resize( $imagewidth, $imageheight, true );
                                         $image->save( $imagetoCheck );
-                                        $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];
+                                        //$outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];
+                                        
+                                        if(file_exists($imagetoCheck)){
+                                            $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];
+                                        }
+                                        else if(file_exists($imagetoCheckSmall)){
+                                            $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.strtolower($pathinfo['extension']);
+                                        }
+
                                     }
                                     else{
                                         $outputimg = $baseurl.$row['image_name'];
@@ -1646,7 +1875,15 @@
 
                                         $isrenamed=rename($return,$imagetoCheck);
                                         if($isrenamed){
-                                            $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];  
+                                            //$outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];  
+                                            
+                                            if(file_exists($imagetoCheck)){
+                                                $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.$pathinfo['extension'];
+                                            }
+                                            else if(file_exists($imagetoCheckSmall)){
+                                                $outputimg = $baseurl.$filenamewithoutextension.'_'.$imageheight.'_'.$imagewidth.'.'.strtolower($pathinfo['extension']);
+                                            }
+
                                         }
                                         else{
                                             $outputimg = $baseurl.$row['image_name']; 
@@ -1824,4 +2061,30 @@
         return $output;
     }
 
+    function responsive_slider_plus_responsive_lightbox_get_wp_version() {
+        global $wp_version;
+        return $wp_version;
+    }
+
+    //also we will add an option function that will check for plugin admin page or not
+    function responsive_slider_plus_lightbox_is_plugin_page() {
+        $server_uri = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+
+        foreach (array('responsive_thumbnail_slider_with_lightbox_image_management') as $allowURI) {
+            if(stristr($server_uri, $allowURI)) return true;
+        }
+        return false;
+    }
+
+    //add media WP scripts
+    function responsive_slider_plus_lightbox_admin_scripts_init() {
+        if(responsive_slider_plus_lightbox_is_plugin_page()) {
+            //double check for WordPress version and function exists
+            if(function_exists('wp_enqueue_media') && version_compare(responsive_slider_plus_responsive_lightbox_get_wp_version(), '3.5', '>=')) {
+                //call for new media manager
+                wp_enqueue_media();
+            }
+            wp_enqueue_style('media');
+        }
+    }
 ?>

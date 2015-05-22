@@ -3,14 +3,12 @@ Contributors:nik00726
 Donate link:http://www.i13websolution.com/donate-wordpress_image_thumbnail.php
 Tags:wordpress thumbnail slider lightbox,wordpress responsive slider lightbox,wordpress image lightbox,wordpress responsive lightbox gallery,wordpress lightbox gallery,wordpress lightbox image,wordpress responsive lightbox scroller,wordpress responsive lightbox slider,wordpress responsive lightbox slideshow
 Requires at least:3.0
-Tested up to:4.1
+Tested up to:4.2.2
 Version:1.0
 Stable tag:trunk
 License:GPLv2 or later
 License URI:http://www.gnu.org/licenses/gpl-2.0.html
 == Description ==
-
-**Support Upto WordPress 4.1**
 
 
 This is beautiful responsive thumbnail slider for wordPress blogs and sites with responsive lightbox.Admin can manages any number of images into the slider.
@@ -20,7 +18,7 @@ Admin can also set link for lightbox image caption title.Image title and link ar
 
 **Live Demo  [Responsive Slider With Responsive Lightbox](http://blog.i13websolution.com/live-preview-wp-responsive-slider-with-lightbox-pro/)**
 
-**Find WordPress Responsive Slider With Responsive Lightbox Pro Plugin(Unlimited Slider+Much more) at [wordPress Responsive Slider With Lightbox](http://www.i13websolution.com/wordpress-responsive-slider-with-responsive-lightbox.html)**
+**Find WordPress Responsive Slider With Responsive Lightbox Pro Plugin(Unlimited Slider + Mass Images Add + Much more) at [wordPress Responsive Slider With Lightbox](http://www.i13websolution.com/wordpress-responsive-slider-with-responsive-lightbox.html)**
 
 **Please rate this plugin if you find it useful**
 
@@ -58,23 +56,25 @@ to theme or pages/posts.
 
 1. Unlimited Slider(Multiple sliders).
 
-2. Pro version WP >3.5 then use WordPress media uploader for image upload.
+2. Mass Images Add into Slider using WordPress Media Manager
 
-3. Add wordpress featured image in slider directly from post/page add/edit.
+3. Pro version WP >3.5 then use WordPress media uploader for image upload.
 
-4. 16 Slider Easing Effects(select your desired slider easing effect).
+4. Add WordPress featured image in slider directly from post/page add/edit.
 
-5. show/hide lightbox caption for particular image lightbox.
+5. 16 Slider Easing Effects(select your desired slider easing effect).
 
-6. No advertisements.
+6. show/hide lightbox caption for particular image lightbox.
 
-7. New Field Added Image Description.If image description set it will added to lightbox image caption.
+7. No advertisements.
 
-8. New Field Added Image Order,Now admin can display slider according image order.
+8. If image description set it will added to lightbox image caption.
 
-9. New Field added open image link in new tab or same tab.The link will be added into lightbox image title
+9. Display slider according image order.
 
-10. Responsive Admin layout
+10. Set Open image link in new tab or same tab.The link will be added into lightbox image title.
+
+11. Responsive Admin layout
 
 
 [Get Support](http://www.i13websolution.com/contacts)
